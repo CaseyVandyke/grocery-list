@@ -1,8 +1,46 @@
 @import 'variables';
-$prefix: "home";
+$prefix: "grocery";
 
 .#{$prefix} {
+    &-add-btn {
+        padding: $padding-small;
+        border-radius: 5px;
+        margin: 0 0 0 $spacing-small;
+    }
+
     &-container {
         color: $body-text;
+        margin: 0 auto;
+        width: 300px;
+    }
+
+    &-list {
+        li {
+            list-style: none;
+        }
+    }
+
+    &-input {
+        border-radius: 5px;
+        border: none;
+        margin: $spacing-medium 0;
+        padding: $padding-small;
+    }
+
+    &-item-container {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin: $spacing-small;
+
+        button {
+            background-color: red;
+            border-radius: 5px;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            padding: $padding-small;
+            min-width: 50px;
+        }
     }
 }
