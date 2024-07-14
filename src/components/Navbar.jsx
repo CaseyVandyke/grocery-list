@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
+import '../styles/navbar.scss';
 
 const Navbar = () => {
     const pre = 'navbar';
@@ -9,15 +10,15 @@ const Navbar = () => {
             <div className={`${pre}-logo`}>
 
             </div>
-            <ul>
+            <ul className={`${pre}-list`}>
                 <li>
-                    <Link to="/home" className={`${pre}-nav-link`}>Home</Link>
+                    <Link to="/home" className={`${pre}-link`}>Home</Link>
                 </li>
                 <li>
-                    <Link to="/about" className={`${pre}-nav-link`}>About</Link>
+                    <Link to="/about" className={`${pre}-link`}>About</Link>
                 </li>
                 <li>
-                    <Link to="/contact" className={`${pre}-nav-link`}>Contact</Link>
+                    <Link to="/contact" className={`${pre}-link`}>Contact</Link>
                 </li>
             </ul>
         </nav>

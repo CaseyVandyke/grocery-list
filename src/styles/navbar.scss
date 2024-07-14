@@ -1,0 +1,19 @@
+@import 'variables';
+$prefix: "navbar";
+
+.#{$prefix} {
+    &-list {
+        display: flex;
+        justify-content: flex-end;
+
+        li {
+            list-style: none;
+            padding: $padding-medium;
+        }
+    }
+
+    &-link {
+        color: $body-text;
+        text-decoration: none;
+    }
+}
