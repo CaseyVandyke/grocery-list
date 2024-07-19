@@ -43,7 +43,7 @@ const Home = () => {
         <section className={`${pre}-container`}>
             <h1>Grocery List</h1>
             <form onSubmit={handleSubmit}>
-                <input type='text' value={groceryItem} onChange={(e) => setGroceryItem(e.target.value)} placeholder='Enter grocery item...' className={`${pre}-input`} />
+                <input type='text' value={groceryItem} onChange={(e) => setGroceryItem(e.target.value)} placeholder='Enter grocery item...' className={`${pre}-input`} required />
                 <button className={`${pre}-add-btn`}type="submit">Add Item</button>
             </form>
             <ul className={`${pre}-list`}>

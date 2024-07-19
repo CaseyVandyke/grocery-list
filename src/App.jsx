@@ -10,7 +10,7 @@ const App = () => {
 	const pre = 'app';
 
 	return (
-		<Router>
+		<Router basename={import.meta.env.BASE_URL}>
 			<main className={`${pre}-container`}>
 				<Navbar />
 				<Routes>
