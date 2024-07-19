@@ -62,12 +62,12 @@ const Home = () => {
                     return (
                         <div className={`${pre}-item-container`}>
                             <li onClick={() => handleItemClick(i)} className={`${pre}-item`} key={i} style={crossedOffItems.includes(i) ? crossedOutStyle : {}}>{g}</li>
-                            <button onClick={() => {confettiReward(); handleItemClick(i)}}>X</button>
+                            <button onClick={() => {confettiReward(); handleItemClick(i)}}>Check</button>
                         </div>
                     )
                 })}
             </ul>
-            <span id="confettiReward" />
+            <span className={`${pre}-confetti`} id="confettiReward" />
         </section>
     );
 };
