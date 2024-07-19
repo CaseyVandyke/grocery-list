@@ -12,7 +12,7 @@ const Navbar = () => {
             </div>
             <ul className={`${pre}-list`}>
                 <li>
-                    <Link to="/home" className={`${pre}-link`}>Home</Link>
+                    <Link to="/" className={`${pre}-link`}>Home</Link>
                 </li>
                 <li>
                     <Link to="/about" className={`${pre}-link`}>About</Link>

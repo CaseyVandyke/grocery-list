@@ -10,12 +10,11 @@ const App = () => {
 	const pre = 'app';
 
 	return (
-		<Router basename={"/grocery-list/"}>
+		<Router basename="/grocery-list/">
 			<main className={`${pre}-container`}>
 				<Navbar />
 				<Routes>
-					<Route exact path="/" element={<Home />} />
-					<Route path="/home" element={<Home />} />
+					<Route path="/" element={<Home />} />
 					<Route path="/about" element={<About />} />
 					<Route path="/contact" element={<Contact />} />
 				</Routes>
