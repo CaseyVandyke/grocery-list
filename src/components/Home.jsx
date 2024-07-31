@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import { useReward } from 'react-rewards';
 import '../styles/home.scss';
 
@@ -10,62 +11,78 @@ const Home = () => {
     const inputRef = useRef(null);
     const pre = 'grocery';
 
+    useEffect(() => {
+        axios.get('http://localhost:3000/grocery-items')
+            .then(response => setGroceryList(response.data))
+            .catch(error => console.error('Error fetching items:', error));
+    }, []);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (groceryItem) {
-            setGroceryList([...groceryList, groceryItem.trim()]);
-            setGroceryItem('');
-            inputRef.current.focus();
-        }
-        
-    }
-
-    const handleItemClick = (index) => {
-        // Update the state of crossedOffIndices
-        setCrossedOffItems((prev) => {
-            // Check if the clicked index is already in the crossedOffIndices array
-            if (prev.includes(index)) {
-                // If the index is already crossed off, remove it from the array
-                // Use the filter method to create a new array without the clicked index
-                return prev.filter((i) => i !== index);
+            // Check if item already exists in the list
+            const existingItem = groceryList.find(item => item.name.toLowerCase() === groceryItem.trim().toLowerCase());
+            if (!existingItem) {
+                axios.post('http://localhost:3000/grocery-items', { name: groceryItem.trim(), quantity: 1 })
+                    .then(response => {
+                        setGroceryList([...groceryList, response.data]);
+                        setGroceryItem('');
+                        inputRef.current.focus();
+                    })
+                    .catch(error => console.error('Error adding item:', error));
             } else {
-                // If the index is not crossed off, add it to the array
-                // Use the spread operator to create a new array with the clicked index added
-                return [...prev, index];
+                console.error('Item already exists');
+            }
+        }
+    };
+
+    const handleItemClick = (id) => {
+        setCrossedOffItems((prev) => {
+            if (prev.includes(id)) {
+                return prev.filter((itemId) => itemId !== id);
+            } else {
+                return [...prev, id];
             }
         });
+    };
+
+    const deleteItem = (id) => {
+        axios.delete(`http://localhost:3000/grocery-items/${id}`)
+            .then(() => {
+                setGroceryList(groceryList.filter(item => item.id !== id));
+                setCrossedOffItems(crossedOffItems.filter(itemId => itemId !== id));
+            })
+            .catch(error => console.error('Error deleting item:', error));
     };
 
     const crossedOutStyle = {
         textDecoration: 'line-through',
         textDecorationColor: 'red',
         textDecorationThickness: '3px'
-    }
+    };
 
     return (
         <section className={`${pre}-container`}>
             <h1>Grocery List</h1>
             <form onSubmit={handleSubmit}>
-                <input 
-                    type='text' 
-                    value={groceryItem} 
-                    onChange={(e) => setGroceryItem(e.target.value)} 
-                    placeholder='Enter grocery item...' 
-                    className={`${pre}-input`} 
+                <input
+                    type='text'
+                    value={groceryItem}
+                    onChange={(e) => setGroceryItem(e.target.value)}
+                    placeholder='Enter grocery item...'
+                    className={`${pre}-input`}
                     ref={inputRef}
-                    required 
+                    required
                 />
-                <button className={`${pre}-add-btn`}type="submit">Add Item</button>
+                <button className={`${pre}-add-btn`} type="submit">Add Item</button>
             </form>
             <ul className={`${pre}-list`}>
-                {groceryList.map((g, i) => {
-                    return (
-                        <div className={`${pre}-item-container`}>
-                            <li onClick={() => handleItemClick(i)} className={`${pre}-item`} key={i} style={crossedOffItems.includes(i) ? crossedOutStyle : {}}>{g}</li>
-                            <button onClick={() => {confettiReward(); handleItemClick(i)}}>Check</button>
-                        </div>
-                    )
-                })}
+                {groceryList.map((g) => (
+                    <div className={`${pre}-item-container`} key={g.id}>
+                        <li onClick={() => handleItemClick(g.id)} className={`${pre}-item`} style={crossedOffItems.includes(g.id) ? crossedOutStyle : {}}>{g.name}</li>
+                        <button onClick={() => { confettiReward(); handleItemClick(g.id); deleteItem(g.id); }}>Check</button>
+                    </div>
+                ))}
             </ul>
             <span className={`${pre}-confetti`} id="confettiReward" />
         </section>
